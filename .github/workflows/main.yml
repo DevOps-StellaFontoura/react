@@ -1,4 +1,4 @@
-name: Build Docker Image and upload to AWS
+name: Build and Upload to AWS S3 Bucket
 
 on:
   push:
