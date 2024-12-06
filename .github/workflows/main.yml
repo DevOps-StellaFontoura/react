@@ -7,7 +7,7 @@ on:
       - staging
       - development
 jobs:
-  build-docker:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
