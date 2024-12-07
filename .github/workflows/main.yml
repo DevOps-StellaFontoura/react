@@ -30,14 +30,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-            node-version: '22'
+            node-version: '20'
             cache: 'npm'
 
       - name: Update npm
         run: npm install -g npm@10
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build app
         run: npm run build
