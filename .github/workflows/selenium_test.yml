@@ -1,0 +1,60 @@
+name: Selenium Tests
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - development
+
+jobs:
+  selenium-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Determinar el ambiente en base a la rama
+      - name: Determine Environment
+        id: env
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            echo "bucket=${{ vars.AWS_S3_BUCKET_PROD }}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref_name }}" == "staging" ]]; then
+            echo "bucket=${{ vars.AWS_S3_BUCKET_QA }}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref_name }}" == "development" ]]; then
+            echo "bucket=${{ vars.AWS_S3_BUCKET_DEV }}" >> $GITHUB_ENV
+          fi
+
+      # 2. Configurar Python (asumiendo que tus tests están en Python)
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      # 3. Instalar dependencias
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install selenium pytest
+
+      # 4. Instalar Google Chrome y ChromeDriver
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Install ChromeDriver
+        run: |
+          sudo apt-get install -y chromium-chromedriver
+          sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+
+      # 6. Ejecutar las pruebas
+      - name: Run Selenium tests
+        run: |
+          pytest selenium_test/
+        env:
+          APPLICATION_URL: ${{ env.bucket }}
+          bucket: ${{ env.bucket }}
