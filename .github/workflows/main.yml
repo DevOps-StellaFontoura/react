@@ -27,6 +27,15 @@ jobs:
             echo "bucket=${{ vars.AWS_S3_BUCKET_DEV }}" >> $GITHUB_ENV
           fi
 
+      - name: Debug bucket
+        run: echo "Bucket is ${{ env.bucket }}"
+
+      - name: Debug AWS_ACCESS_KEY_ID
+        run: echo "Bucket is ${{ secrets.AWS_ACCESS_KEY_ID }}"
+      
+      - name: Debug AWS_SECRET_ACCESS_KEY
+        run: echo "Bucket is ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
