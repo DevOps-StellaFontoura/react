@@ -12,7 +12,13 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 class TestUI():
   def setup_method(self, method):
-    self.driver = webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # Modo headless
+    chrome_options.add_argument("--no-sandbox")  # Evita restricciones de sandboxing
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Usa /dev/shm para evitar problemas de memoria
+    chrome_options.add_argument("--disable-gpu")  # Deshabilita la GPU (opcional)
+    chrome_options.add_argument("--window-size=1920,1080")  # Establece un tamaño de ventana
+    self.driver = webdriver.Chrome(options=chrome_options)
     self.vars = {}
   
   def teardown_method(self, method):
