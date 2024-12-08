@@ -35,6 +35,11 @@ class TestUI():
   def test_uI(self):
     self.driver.get("http://ffls-frontend-app-bucket-prod.s3-website-us-east-1.amazonaws.com/")
     self.driver.set_window_size(652, 672)
+
+    wait = WebDriverWait(self.driver, 10)
+    element = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "What\'s next?")))
+    element.click()
+
     self.driver.find_element(By.LINK_TEXT, "What\'s next?").click()
     self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(3) > summary").click()
     self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(4) > summary").click()
