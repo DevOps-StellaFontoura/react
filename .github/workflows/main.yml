@@ -1,11 +1,16 @@
 name: Build and Upload to AWS S3 Bucket
 
 on:
-  push:
-    branches:
-      - main
-      - staging
-      - development
+   push:
+     branches:
+       - main
+       - staging
+       - development
+   pull_request:
+     branches:
+       - main
+       - staging
+       - development
 jobs:
   deploy:
     runs-on: ubuntu-latest
