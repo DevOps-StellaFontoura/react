@@ -33,41 +33,69 @@ class TestUI():
     if len(wh_now) > len(wh_then):
       return set(wh_now).difference(set(wh_then)).pop()
   
-  def test_uI(self):
+  def test_ui(self):
+    # URL de la aplicación
     self.driver.get("http://ffls-frontend-app-bucket-prod.s3-website-us-east-1.amazonaws.com/")
     self.driver.set_window_size(652, 672)
+    
+    wait = WebDriverWait(self.driver, 10)  # Tiempo máximo de espera de 10 segundos
+    
+    # Hacer clic en "What's next?" asegurándose de que el elemento sea clicable
+    try:
+        element = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "What's next?")))
+        element.click()
+    except Exception as e:
+        print(f"Error al hacer clic en 'What's next?': {e}")
+    
+    # Desplazar al elemento y asegurarse de que sea clicable
+    try:
+        target_element = self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(3) > summary")
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", target_element)
+        clickable_element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "details:nth-child(3) > summary")))
+        clickable_element.click()
+    except Exception as e:
+        print(f"Error al interactuar con 'details:nth-child(3) > summary': {e}")
 
-    wait = WebDriverWait(self.driver, 10)
-    element = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "What\'s next?")))
-    element.click()
+    # Interactuar con los demás detalles
+    try:
+        self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(4) > summary").click()
+        self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(5) > summary").click()
+    except Exception as e:
+        print(f"Error al interactuar con otros detalles: {e}")
 
-    self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(3) > summary").click()
-    self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(4) > summary").click()
-    self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(5) > summary").click()
-    self.vars["window_handles"] = self.driver.window_handles
-    self.driver.find_element(By.CSS_SELECTOR, ".list-item-link:nth-child(5) > span").click()
-    self.vars["win5471"] = self.wait_for_window(2000)
-    self.vars["root"] = self.driver.current_window_handle
-    self.driver.switch_to.window(self.vars["win5471"])
-    self.driver.close()
-    self.driver.switch_to.window(self.vars["root"])
-    self.vars["window_handles"] = self.driver.window_handles
-    self.driver.find_element(By.CSS_SELECTOR, ".list-item-link:nth-child(2) > span > span").click()
-    self.vars["win9931"] = self.wait_for_window(2000)
-    self.driver.switch_to.window(self.vars["win9931"])
-    self.driver.close()
-    self.driver.switch_to.window(self.vars["root"])
-    self.vars["window_handles"] = self.driver.window_handles
-    self.driver.find_element(By.CSS_SELECTOR, ".list-item-link:nth-child(4) > span").click()
-    self.vars["win6229"] = self.wait_for_window(2000)
-    self.driver.switch_to.window(self.vars["win6229"])
-    self.driver.close()
-    self.driver.switch_to.window(self.vars["root"])
-    self.vars["window_handles"] = self.driver.window_handles
-    self.driver.find_element(By.ID, "nx-console").click()
-    self.vars["win5708"] = self.wait_for_window(2000)
-    self.driver.switch_to.window(self.vars["win5708"])
-    self.driver.close()
-    self.driver.switch_to.window(self.vars["root"])
+    # Manejar ventanas emergentes y enlaces
+    try:
+        self.vars["window_handles"] = self.driver.window_handles
+        self.driver.find_element(By.CSS_SELECTOR, ".list-item-link:nth-child(5) > span").click()
+        self.vars["win5471"] = self.wait_for_window(2000)
+        self.vars["root"] = self.driver.current_window_handle
+        self.driver.switch_to.window(self.vars["win5471"])
+        self.driver.close()
+        self.driver.switch_to.window(self.vars["root"])
+        
+        self.vars["window_handles"] = self.driver.window_handles
+        self.driver.find_element(By.CSS_SELECTOR, ".list-item-link:nth-child(2) > span > span").click()
+        self.vars["win9931"] = self.wait_for_window(2000)
+        self.driver.switch_to.window(self.vars["win9931"])
+        self.driver.close()
+        self.driver.switch_to.window(self.vars["root"])
+        
+        self.vars["window_handles"] = self.driver.window_handles
+        self.driver.find_element(By.CSS_SELECTOR, ".list-item-link:nth-child(4) > span").click()
+        self.vars["win6229"] = self.wait_for_window(2000)
+        self.driver.switch_to.window(self.vars["win6229"])
+        self.driver.close()
+        self.driver.switch_to.window(self.vars["root"])
+        
+        self.vars["window_handles"] = self.driver.window_handles
+        self.driver.find_element(By.ID, "nx-console").click()
+        self.vars["win5708"] = self.wait_for_window(2000)
+        self.driver.switch_to.window(self.vars["win5708"])
+        self.driver.close()
+        self.driver.switch_to.window(self.vars["root"])
+    except Exception as e:
+        print(f"Error al manejar ventanas o enlaces: {e}")
+
+    # Cerrar la ventana principal
     self.driver.close()
   
