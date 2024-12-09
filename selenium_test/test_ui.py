@@ -41,7 +41,6 @@ class TestUI():
     element = wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "What\'s next?")))
     element.click()
 
-    self.driver.find_element(By.LINK_TEXT, "What\'s next?").click()
     self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(3) > summary").click()
     self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(4) > summary").click()
     self.driver.find_element(By.CSS_SELECTOR, "details:nth-child(5) > summary").click()
